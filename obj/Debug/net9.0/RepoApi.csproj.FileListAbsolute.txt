@@ -186,4 +186,5 @@ C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\rjimswa.dswa.cache
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\RepoApi.sourcelink.json
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

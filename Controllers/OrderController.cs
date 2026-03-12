@@ -23,15 +23,17 @@ namespace RepoApi.Controllers
         {
             var orders = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o => o.OrderItems).ThenInclude(oi => oi.Product).ThenInclude(p => p.Category)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p.Brand)
                 .ToListAsync();
 
             var result = orders.Select(o => new OrderDto
             {
                 Id = o.Id,
-                CustomerId = o.CustomerId,
                 OrderDate = o.OrderDate,
+                Customer = new CustomerDTO { Id = o.Customer.Id, Email = o.Customer.Email, Name = o.Customer.Name},
                 TotalPrice = o.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity),
                 Items = o.OrderItems.Select(oi => new OrderItemDto
                 {
@@ -51,8 +53,10 @@ namespace RepoApi.Controllers
         {
             var order = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o=> o.OrderItems).ThenInclude(oi => oi.Product).ThenInclude(p => p.Category)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p.Brand)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null) return NotFound();
@@ -60,8 +64,7 @@ namespace RepoApi.Controllers
             var dto = new OrderDto
             {
                 Id = order.Id,
-                CustomerId = order.CustomerId,
-                Customer = order.Customer,
+                Customer = new CustomerDTO { Id = order.Customer.Id, Email = order.Customer.Email, Name = order.Customer.Name },
                 OrderDate = order.OrderDate,
                 TotalPrice = order.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity),
                 Items = order.OrderItems.Select(oi => new OrderItemDto
@@ -80,9 +83,20 @@ namespace RepoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder([FromBody] Order order)
         {
-            order.OrderDate = DateTime.UtcNow;
-            order.OrderAmount = order.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
+            if (order.OrderItems == null || !order.OrderItems.Any())
+                return BadRequest("Order must have at least one item.");
 
+            foreach ( var item in order.OrderItems) {
+                var product = await _context.Products.FindAsync(item.ProductId);
+
+                if (product == null) return NotFound($"Product {item.ProductId} not found.");
+
+                item.UnitPrice = product.Price;
+                    }
+
+            order.TotalPrice = order.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
+
+            order.OrderDate = DateTime.UtcNow;
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
@@ -94,8 +108,9 @@ namespace RepoApi.Controllers
         public async Task<ActionResult> UpdateOrder(int id, [FromBody] Order order)
         {
             if (id != order.Id) return BadRequest();
+            // Note: UnitPrice taken from request body, not validated against DB (intentional for comparison, its fixed in CreateOrder above)
+            order.TotalPrice = order.OrderItems?.Sum(oi => oi.UnitPrice * oi.Quantity) ?? 0;
 
-            order.OrderAmount = order.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
             _context.Entry(order).State = EntityState.Modified;
 
             try

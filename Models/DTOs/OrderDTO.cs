@@ -3,15 +3,14 @@
     public class OrderDto
     {
         public int Id { get; set; }
-        public int CustomerId { get; set; }
 
-        public Customer Customer { get; set; }
+        public CustomerDTO Customer { get; set; }
         public DateTime OrderDate { get; set; }
 
         // Calculated in controller (not from DB directly)
         public decimal TotalPrice { get; set; }
 
-        public List<OrderItemDto> Items { get; set; } = new();
+        public List<OrderItemDto>? Items { get; set; }
     }
 
     public class OrderItemDto

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RepoApi.Data;
 using RepoApi.Models;
+using RepoApi.Models.DTOs;
 
 namespace RepoApi.Controllers
 {
@@ -28,9 +29,29 @@ namespace RepoApi.Controllers
                 .Include(c => c.Orders).ThenInclude(o => o.OrderItems).ThenInclude(p=> p.Product).FirstOrDefaultAsync(c => c.Id == id);
 
             if (customer == null) return NotFound();
+            var result = new CustomerDTO
+            {
+                Email = customer.Email,
+                Id = customer.Id,
+                Name = customer.Name,
+                Orders = customer.Orders.Select( o => new OrderDto
+                {
+                    Id = o.Id,
+                    Items =  o.OrderItems.Select( oi => new OrderItemDto 
+                        {
+                            Id = oi.Id,
+                            ProductId = oi.ProductId,
+                            ProductName = oi.Product.Name,
+                            UnitPrice = oi.Product.Price,
+                            Quantity = oi.Quantity       
+                        }).ToList(),
+                    OrderDate = o.OrderDate,
+                    TotalPrice = o.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity)
+                }).ToList()
+            };
 
 
-            return Ok(customer);
+            return Ok(result);
         }
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
@@ -53,7 +74,9 @@ namespace RepoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return BadRequest();
+                if (!await _context.Customers.AnyAsync(p => p.Id == id))
+                    return NotFound();
+                throw;
             }
             return NoContent();
 
@@ -64,7 +87,7 @@ namespace RepoApi.Controllers
             var cust = await _context.Customers.FindAsync(id);
 
             if (cust == null) { return NotFound(); }
-            ;
+            
 
             _context.Customers.Remove(cust);
             await _context.SaveChangesAsync();

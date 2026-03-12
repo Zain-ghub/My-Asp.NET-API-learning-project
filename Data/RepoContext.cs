@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Services;
 using RepoApi.Models;
 
 namespace RepoApi.Data
@@ -57,7 +56,7 @@ namespace RepoApi.Data
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<Order>()
-                .Property(o => o.OrderAmount)
+                .Property(o => o.TotalPrice)
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<OrderItem>()
