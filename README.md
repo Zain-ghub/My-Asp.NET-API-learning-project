@@ -9,6 +9,8 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 - Entity Framework Core (Code First)
 - SQL Server
 - C#
+- xUnit + FluentAssertions (unit testing)
+- Moq (mocking)
 
 ## Features
 
