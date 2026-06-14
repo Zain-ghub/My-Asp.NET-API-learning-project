@@ -17,7 +17,17 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 - DTO layer to control API response shape and avoid circular reference issues
 - Custom middleware pipeline — global exception handling and request logging
 - Order pricing logic validated server-side against the database
-
+  
+## Architecture
+Controllers are intentionally split into two groups:
+- **Refactored** (`OrderController`, `CustomerController`) — thin controllers depending on service interfaces, with business logic in dedicated service classes
+- **Legacy** (`ProductsController`, `BrandController`, `CategoryController`) — direct DbContext access, kept as-is for comparison
+  
+## Running Tests
+1. Open the solution in Visual Studio
+2. Go to Test → Run All Tests
+3. All 14 tests should pass
+   
 ## Endpoints
 
 | Method | Endpoint | Description |
