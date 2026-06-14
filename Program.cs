@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RepoApi.Data;
 using RepoApi.Middleware;
+using RepoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
         x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles); ;
 builder.Services.AddDbContext<RepoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RepoConnection")));
-
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 var app = builder.Build();
 // adding middleware in order
 app.UseMiddleware<ExeptionHandlingMiddleware>();

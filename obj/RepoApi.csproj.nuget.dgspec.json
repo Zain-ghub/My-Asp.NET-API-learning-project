@@ -50,6 +50,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[8.10.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -77,6 +81,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
             }
           },
           "imports": [
@@ -98,7 +106,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
