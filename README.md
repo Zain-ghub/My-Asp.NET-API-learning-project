@@ -5,6 +5,7 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 
 ## Tech Stack
 
+- Docker & Docker Compose
 - ASP.NET Core 9
 - Entity Framework Core (Code First)
 - SQL Server
@@ -24,6 +25,15 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 Controllers are intentionally split into two groups:
 - **Refactored** (`OrderController`, `CustomerController`) — thin controllers depending on service interfaces, with business logic in dedicated service classes
 - **Legacy** (`ProductsController`, `BrandController`, `CategoryController`) — direct DbContext access, kept as-is for comparison
+
+## Running with Docker
+The full stack (API + SQL Server) can be run in containers with no local SQL Server installation required.
+
+1. Make sure Docker Desktop is installed and running
+2. From the solution root, run: "docker-compose up --build"
+3. The API will be available at `http://localhost:8080`
+4. Database migrations are applied automatically on startup
+5. To reset the database completely: "docker-compose down -v" "docker-compose up --build"
   
 ## Running Tests
 1. Open the solution in Visual Studio
