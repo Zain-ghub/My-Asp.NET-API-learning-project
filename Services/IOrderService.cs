@@ -7,8 +7,8 @@ namespace RepoApi.Services
     {
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
         Task<OrderDto?> GetOrderByIdAsync(int id);
-        Task<Order?> CreateOrderAsync(Order order);
-        Task<bool> UpdateOrderAsync(Order order);
+        Task<OrderDto?> CreateOrderAsync(Order order);
+        Task<bool> UpdateOrderAsync(Order order, int id);
         Task<bool> DeleteOrderAsync(int id);
     }
 }

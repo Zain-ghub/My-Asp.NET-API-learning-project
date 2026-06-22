@@ -187,7 +187,7 @@ C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\rjsmrazor.dswa.cac
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\RepoApi.sourcelink.json
-C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\Castle.Core.dll
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\FluentAssertions.dll
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\Moq.dll
+C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

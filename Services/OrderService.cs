@@ -70,7 +70,7 @@ namespace RepoApi.Services
             return dto;
         }
 
-        public async Task<Order?> CreateOrderAsync(Order order)
+        public async Task<OrderDto?> CreateOrderAsync(Order order)
         {
             foreach (var item in order.OrderItems)
             {
@@ -87,7 +87,7 @@ namespace RepoApi.Services
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            return order;
+            return await GetOrderByIdAsync(order.Id);
         }
 
         public async Task<bool> UpdateOrderAsync(Order order, int id) 

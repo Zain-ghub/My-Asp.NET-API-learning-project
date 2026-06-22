@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("f457c671-a37e-4d54-b978-093804817995")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("RepoApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4214258a1ed33d1e6d6f8eed3bb379ec0d6c0dad")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b601004a987aa62dae4d07c0402fc51ba6a0512")]
 [assembly: System.Reflection.AssemblyProductAttribute("RepoApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RepoApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

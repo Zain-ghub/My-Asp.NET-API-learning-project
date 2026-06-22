@@ -39,7 +39,7 @@ namespace RepoApi.Controllers
 
         // POST: api/order
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder([FromBody] Order order)
+        public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] Order order)
         {
             if (order.OrderItems == null || !order.OrderItems.Any())
                 return BadRequest("Order must have at least one item.");
@@ -57,7 +57,7 @@ namespace RepoApi.Controllers
         {
             if (id != order.Id) return BadRequest();
             // Note: UnitPrice taken from request body, not validated against DB (intentional for comparison, its fixed in CreateOrder above)
-            var result = await _orderService.UpdateOrderAsync(order);
+            var result = await _orderService.UpdateOrderAsync(order, id);
 
             if (result == false) return NotFound();
 
