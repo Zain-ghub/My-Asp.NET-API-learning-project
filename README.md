@@ -12,6 +12,7 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 - C#
 - xUnit + FluentAssertions (unit testing)
 - Moq (mocking)
+- RabbitMQ (event-driven messaging)
 
 ## Features
 
@@ -25,9 +26,16 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 Controllers are intentionally split into two groups:
 - **Refactored** (`OrderController`, `CustomerController`) — thin controllers depending on service interfaces, with business logic in dedicated service classes
 - **Legacy** (`ProductsController`, `BrandController`, `CategoryController`) — direct DbContext access, kept as-is for comparison
+  
+## Event-Driven Order Processing
+When an order is created, the API publishes an `order_created` event to RabbitMQ. A separate console application (`RepoApi.OrderConsumer`) listens for these events and independently deducts stock from the database — demonstrating decoupled, event-driven communication between services.
+
+- **Producer**: `OrderService` publishes order details (Id, items, quantities) after successfully saving an order
+- **Consumer**: `RepoApi.OrderConsumer` listens continuously, validates stock availability, and updates `Product.StockQuantity`
+- Stock validation also happens synchronously in the API before order creation, returning a clear error if insufficient stock is available
 
 ## Running with Docker
-The full stack (API + SQL Server) can be run in containers with no local SQL Server installation required.
+The full stack — API, SQL Server, RabbitMQ, and the Order Consumer — can be run together in containers with no local SQL Server or RabbitMQ installation required.
 
 1. Make sure Docker Desktop is installed and running
 2. From the solution root, run: "docker-compose up --build"
