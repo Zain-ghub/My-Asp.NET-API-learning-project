@@ -3,16 +3,19 @@ using RepoApi.Data;
 using RepoApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Runtime.CompilerServices;
 
 namespace RepoApi.Services
 {
     public class OrderService : IOrderService
     {
         private readonly RepoContext _context;
-        
-        public OrderService(RepoContext context)
+        private readonly RabbitMQPublisher _publisher;
+
+        public OrderService(RepoContext context, RabbitMQPublisher publisher )
         {
             _context = context;
+            _publisher = publisher;
         }
         public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
         {
@@ -72,13 +75,21 @@ namespace RepoApi.Services
 
         public async Task<OrderDto?> CreateOrderAsync(Order order)
         {
+            var publishItems = new List<OrderCreatedItem>();
+
             foreach (var item in order.OrderItems)
             {
                 var product = await _context.Products.FindAsync(item.ProductId);
 
-                if (product == null) return null;
+                if (product == null) throw new InvalidOperationException($"Product {item.ProductId} not found."); ;
+
+                if (product.StockQuantity < item.Quantity)
+                   throw new InvalidOperationException($"Not enough stock for {product.Name}. Available: {product.StockQuantity}, requested: {item.Quantity}.");
+
 
                 item.UnitPrice = product.Price;
+
+                publishItems.Add((new OrderCreatedItem { ProductId = item.ProductId, ProductName = product.Name, Quantity = item.Quantity }));
             }
 
             order.TotalPrice = order.OrderItems.Sum(oi => oi.UnitPrice * oi.Quantity);
@@ -86,6 +97,18 @@ namespace RepoApi.Services
             order.OrderDate = DateTime.UtcNow;
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
+
+            // Publish the order to RabbitMQ
+
+            try
+            {
+                await _publisher.PublishOrderCreatedAsync(order.Id, publishItems);
+                Console.WriteLine("Successfully published order created event.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"FAILED to publish: {ex.Message}");
+            }
 
             return await GetOrderByIdAsync(order.Id);
         }

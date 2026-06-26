@@ -18,7 +18,9 @@ namespace RepoApi.Models
         
         public Category ?Category { get; set; }
         public int BrandId { get; set; }
-        
+
+        public int StockQuantity { get; set; }
+
         public Brand ?Brand { get; set; }
         [JsonIgnore]
         public List<OrderItem> ?OrderItems { get; set; }

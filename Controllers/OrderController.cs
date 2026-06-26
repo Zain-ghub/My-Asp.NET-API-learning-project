@@ -44,11 +44,17 @@ namespace RepoApi.Controllers
             if (order.OrderItems == null || !order.OrderItems.Any())
                 return BadRequest("Order must have at least one item.");
 
-            var result = await _orderService.CreateOrderAsync(order);
             
-            if (result == null) return BadRequest("Failed to create order.");
 
-            return CreatedAtAction(nameof(GetOrder), new { id = result.Id }, result);
+            try
+            {
+                var result = await _orderService.CreateOrderAsync(order);
+                return CreatedAtAction(nameof(GetOrder), new { id = result.Id }, result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT: api/order/{id}

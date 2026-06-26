@@ -37,7 +37,9 @@ namespace RepoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
         {
+            product.StockQuantity = 10; // Set stock quantity to 10
             _context.Products.Add(product);
+            
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);

@@ -18,6 +18,7 @@ builder.Services.AddDbContext<RepoContext>(options =>
         errorNumbersToAdd: null
     )));
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddSingleton(new RabbitMQPublisher("rabbitmq"));
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
