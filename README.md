@@ -1,4 +1,5 @@
 [README.md](https://github.com/user-attachments/files/25934255/README.md)
+![Tests](https://github.com/Zain-ghub/My-Asp.NET-API-learning-project/actions/workflows/dotnet-tests.yml/badge.svg)
 # RepoApi — ASP.NET Core REST API
 
 A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrating core backend development concepts including relational data modeling, middleware pipelines, and DTO patterns.
@@ -13,6 +14,9 @@ A RESTful Web API built with ASP.NET Core and Entity Framework Core, demonstrati
 - xUnit + FluentAssertions (unit testing)
 - Moq (mocking)
 - RabbitMQ (event-driven messaging)
+- GitHub Actions (CI)
+- SignalR (real-time communication)
+
 
 ## Features
 
@@ -34,6 +38,9 @@ When an order is created, the API publishes an `order_created` event to RabbitMQ
 - **Consumer**: `RepoApi.OrderConsumer` listens continuously, validates stock availability, and updates `Product.StockQuantity`
 - Stock validation also happens synchronously in the API before order creation, returning a clear error if insufficient stock is available
 
+## Real-Time Stock Updates
+The Order Consumer broadcasts live stock changes via SignalR after processing each order. A minimal test page (`wwwroot/stocktest.html`) demonstrates this — connecting to the `/stockhub` endpoint and displaying stock updates in real time as orders are processed, with no page refresh required.
+
 ## Running with Docker
 The full stack — API, SQL Server, RabbitMQ, and the Order Consumer — can be run together in containers with no local SQL Server or RabbitMQ installation required.
 
@@ -47,6 +54,9 @@ The full stack — API, SQL Server, RabbitMQ, and the Order Consumer — can be 
 1. Open the solution in Visual Studio
 2. Go to Test → Run All Tests
 3. All 14 tests should pass
+   
+## Continuous Integration
+Tests run automatically on every push via GitHub Actions. See the badge above for current build status.
    
 ## Endpoints
 
