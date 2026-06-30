@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RepoApi.Data;
+using RepoApi.Hubs;
 using RepoApi.Middleware;
 using RepoApi.Services;
 
@@ -18,14 +19,19 @@ builder.Services.AddDbContext<RepoContext>(options =>
         errorNumbersToAdd: null
     )));
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddSingleton(new RabbitMQPublisher("rabbitmq"));
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<IRabbitMQPublisher>(new RabbitMQPublisher("rabbitmq"));
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<RepoContext>();
     db.Database.Migrate();
 }
+app.MapHub<StockHub>("/stockhub");
+app.UseStaticFiles();
 // adding middleware in order
 app.UseMiddleware<ExeptionHandlingMiddleware>();
 app.UseMiddleware<LoggerMiddleware>();

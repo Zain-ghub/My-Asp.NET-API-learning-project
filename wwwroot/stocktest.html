@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            background-color: #2b2b2b;
+            color: #f0f0f0;
+            font-family: sans-serif;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+    <h1> Live Stock Update </h1>
+    <ul id="messages"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/stockhub")
+            .build();
+
+        connection.on("StockUpdated", (productName, newStock) => {
+            console.log("StockUpdated event received:", productName, newStock);
+            const li = document.createElement("li");
+            li.textContent = `${productName} stock updated: ${newStock}`;
+            document.getElementById("messages").appendChild(li);
+        });
+
+        connection.start()
+            .then(() => console.log("Connected to hub"))
+            .catch(err => console.error("Connection failed:", err));
+
+        connection.onclose((error) => {
+            console.error("Connection closed:", error);
+        });
+    </script>
+
+
+</body>
+</html>

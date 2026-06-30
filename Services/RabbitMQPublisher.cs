@@ -6,7 +6,7 @@ using RepoApi.Models;
 
 namespace RepoApi.Services
 {
-    public class RabbitMQPublisher
+    public class RabbitMQPublisher : IRabbitMQPublisher
     {
         private readonly string _hostName;
 
@@ -17,7 +17,12 @@ namespace RepoApi.Services
 
         public async Task PublishOrderCreatedAsync(int orderId,List<OrderCreatedItem> items)
         {
-            var factory = new ConnectionFactory() { HostName = _hostName };
+            var factory = new ConnectionFactory
+            {
+                HostName = "rabbitmq",
+                UserName = "admin",
+                Password = "admin"
+            }; ;
             using var connection = await factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 

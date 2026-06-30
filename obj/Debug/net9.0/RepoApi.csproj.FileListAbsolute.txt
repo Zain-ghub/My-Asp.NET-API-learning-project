@@ -191,3 +191,6 @@ C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\Castle.Core.dll
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\FluentAssertions.dll
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\Moq.dll
 C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\RabbitMQ.Client.dll
+C:\Users\zainus\source\repos\RepoApi\RepoApi\bin\Debug\net9.0\RepoApi.staticwebassets.runtime.json
+C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\compressed\wwrrywu1tj-0wmdfpz2gx.gz
+C:\Users\zainus\source\repos\RepoApi\RepoApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

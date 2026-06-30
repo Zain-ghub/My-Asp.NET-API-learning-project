@@ -10,9 +10,10 @@ namespace RepoApi.Services
     public class OrderService : IOrderService
     {
         private readonly RepoContext _context;
-        private readonly RabbitMQPublisher _publisher;
+        private readonly IRabbitMQPublisher _publisher;
 
-        public OrderService(RepoContext context, RabbitMQPublisher publisher )
+
+        public OrderService(RepoContext context, IRabbitMQPublisher publisher )
         {
             _context = context;
             _publisher = publisher;

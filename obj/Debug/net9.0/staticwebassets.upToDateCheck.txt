@@ -1,0 +1,2 @@
+wwwroot\stocktest.html
+C:\Users\zainus\source\repos\RepoApi\RepoApi\wwwroot\stocktest.html
